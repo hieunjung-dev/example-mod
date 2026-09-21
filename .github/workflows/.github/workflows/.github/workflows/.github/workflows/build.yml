@@ -8,11 +8,8 @@ on:
 
 jobs:
   build:
+    name: Build Mod
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Build Mod
-        uses: geode-sdk/build-geode-mod@main
+      - uses: actions/checkout@v4
+      - uses: geode-sdk/build-geode-mod@main
