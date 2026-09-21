@@ -8,14 +8,7 @@ on:
 
 jobs:
   build:
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          - name: Android
-            os: ubuntu-latest
-            platform: android
-    runs-on: ${{ matrix.config.os }}
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
@@ -23,7 +16,3 @@ jobs:
 
       - name: Build Mod
         uses: geode-sdk/build-geode-mod@main
-        with:
-          bindings: geode-sdk/bindings
-          bindings-ref: main
-          platform: ${{ matrix.config.platform }}
