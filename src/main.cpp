@@ -1,10 +1,10 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
-#include <Geode/modify/GJBaseGameLayer.hpp>
+#include <Geode/modify/PlayerObject.hpp>
 
 using namespace geode::prelude;
 
-// 전역 또는 인스턴스 공유를 위한 카운터 상태 관리
+// 전역 카운터 상태 관리
 namespace CounterState {
     inline int groundTicks = 0;
     inline bool wasOnGround = false;
@@ -72,7 +72,6 @@ class $modify(MyPlayLayer, PlayLayer) {
             return label;
         };
 
-        // NaN GD 스타일 카운터 라벨 배치
         CounterState::lbl9_12 = makeRow("9-12", {70, 110, 255}, spacing * 0);
         CounterState::lbl7_8  = makeRow("7-8",  {70, 180, 255}, spacing * 1);
         CounterState::lbl5_6  = makeRow("5-6",  {90, 255, 120}, spacing * 2);
@@ -115,13 +114,15 @@ class $modify(MyPlayLayer, PlayLayer) {
     }
 };
 
-// 2. 점프 입력 후킹 및 틱 판정 (GJBaseGameLayer)
-class $modify(MyBaseGameLayer, GJBaseGameLayer) {
-    void pushButton(PlayerButton playerButton, bool isPlayer2) {
-        GJBaseGameLayer::pushButton(playerButton, isPlayer2);
+// 2. 플레이어 점프 입력 후킹 및 프레임 틱 판정 (PlayerObject)
+class $modify(MyPlayerObject, PlayerObject) {
+    void pushButton(PlayerButton playerButton) {
+        PlayerObject::pushButton(playerButton);
 
-        // 점프 버튼이 아니거나 플레이어 2 입력이면 무시
-        if (playerButton != PlayerButton::Jump || isPlayer2) return;
+        auto pl = PlayLayer::get();
+        // 인게임 상태가 아니거나 1P가 아니면 판정 제외
+        if (!pl || this != pl->m_player1) return;
+        if (playerButton != PlayerButton::Jump) return;
 
         if (CounterState::wasOnGround && CounterState::groundTicks > 0) {
             int ticks = CounterState::groundTicks;
