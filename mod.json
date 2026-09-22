@@ -10,8 +10,5 @@
   "name": "Dynamic Frame Counter",
   "version": "v1.0.0",
   "developer": "otalmooioioi",
-  "description": "Dynamic frame window counter inspired by NaN GD.",
-  "dependencies": {
-    "geode.node-ids": ">=v1.23.3"
-  }
+  "description": "Dynamic frame window counter inspired by NaN GD."
 }
