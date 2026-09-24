@@ -1,2 +1,2 @@
 # 1.0.0
-- 기본 ui및 효과음생성
+- Added UI and sound effects
